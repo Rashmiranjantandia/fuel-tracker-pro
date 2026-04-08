@@ -7,6 +7,7 @@ import { GasPumpIcon } from './icons/GasPumpIcon';
 import { EuroIcon } from './icons/EuroIcon';
 import { RoadIcon } from './icons/RoadIcon';
 import { TrashIcon } from './icons/TrashIcon';
+import { formatLiters, formatPricePerLiter, formatTotalCost, kmPerLiter, formatEfficiency } from '../lib/formatters';
 
 interface FuelHistoryProps {
     entries: FuelEntry[];
@@ -24,7 +25,8 @@ const HistoryItem: React.FC<{ entry: FuelEntry; onDelete: (id: string) => void }
             </div>
             {entry.l100km && (
                 <div className="bg-brand-primary/20 text-brand-secondary text-sm font-bold px-3 py-1 rounded-full text-center">
-                    {entry.l100km.toFixed(2)} <span>L/100km</span>
+                    <div>{kmPerLiter(entry.l100km)} km/L</div>
+                    <div className="text-xs font-normal text-text-secondary">≈ {formatEfficiency(entry.l100km)} L/100km</div>
                 </div>
             )}
         </div>
@@ -32,18 +34,18 @@ const HistoryItem: React.FC<{ entry: FuelEntry; onDelete: (id: string) => void }
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
             <div className="flex items-center space-x-2">
                 <GasPumpIcon className="w-4 h-4 text-text-secondary"/>
-                <p><span className="font-semibold">{entry.liters.toFixed(2)}</span> L</p>
+                <p><span className="font-semibold">{formatLiters(entry.liters)}</span> L</p>
             </div>
             <div className="flex items-center space-x-2">
                 <EuroIcon className="w-4 h-4 text-text-secondary"/>
-                <p><span className="font-semibold">{entry.priceTotalLiter.toFixed(3)}</span> €/L</p>
+                <p><span className="font-semibold">₹{formatPricePerLiter(entry.priceTotalLiter)}</span>/L</p>
             </div>
              <div className="flex items-center space-x-2">
                 <RoadIcon className="w-4 h-4 text-text-secondary"/>
                 <p><span className="font-semibold">{entry.odometer.toLocaleString(undefined)}</span> km</p>
             </div>
             <div className="flex items-center space-x-2 font-bold text-lg text-text-primary">
-                 <p>{entry.totalCost.toFixed(2)} €</p>
+                 <p>{formatTotalCost(entry.totalCost)}</p>
             </div>
         </div>
 

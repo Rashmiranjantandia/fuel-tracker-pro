@@ -2,15 +2,17 @@
 import React from 'react';
 // FIX: The types file was moved to the domain folder.
 import type { Stats } from '../domain/types';
+import { kmPerLiter, formatEfficiency, formatTotalCost, formatDistance } from '../lib/formatters';
 
 interface StatCardProps {
     title: string;
     value: string;
     unit: string;
     icon: React.ReactNode;
+    secondary?: string;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ title, value, unit, icon }) => (
+const StatCard: React.FC<StatCardProps> = ({ title, value, unit, icon, secondary }) => (
     <div data-testid="stat-card" className="bg-base-200 p-6 rounded-2xl shadow-lg flex items-center space-x-4">
         <div className="bg-base-300 p-3 rounded-full">
             {icon}
@@ -20,6 +22,9 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, unit, icon }) => (
             <p className="text-2xl font-bold text-text-primary">
                 {value} <span className="text-lg font-normal text-text-secondary">{unit}</span>
             </p>
+            {secondary && (
+                <p className="text-xs text-text-secondary font-normal">{secondary}</p>
+            )}
         </div>
     </div>
 );
@@ -54,19 +59,20 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({ stats }) => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <StatCard 
                 title="Average Consumption"
-                value={stats.averageConsumption.toFixed(2)}
-                unit="L/100km"
+                value={stats.averageConsumption > 0 ? kmPerLiter(stats.averageConsumption) : '0'}
+                unit="km/L"
+                secondary={stats.averageConsumption > 0 ? `≈ ${formatEfficiency(stats.averageConsumption)} L/100km` : ''}
                 icon={<FireIcon className="w-6 h-6 text-brand-secondary" />}
             />
             <StatCard 
                 title="Total Cost"
-                value={stats.totalCost.toFixed(2)}
-                unit="€"
+                value={formatTotalCost(stats.totalCost)}
+                unit=""
                 icon={<WalletIcon className="w-6 h-6 text-brand-secondary" />}
             />
             <StatCard 
                 title="Total Distance"
-                value={stats.totalDistance.toLocaleString(undefined)}
+                value={formatDistance(stats.totalDistance)}
                 unit="km"
                 icon={<MapIcon className="w-6 h-6 text-brand-secondary" />}
             />

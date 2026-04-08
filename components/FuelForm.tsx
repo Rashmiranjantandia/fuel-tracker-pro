@@ -88,10 +88,10 @@ export const FuelForm: React.FC<FuelFormProps> = ({ onAddEntry, entries }) => {
 				{formError.liters && <p className='bg-red-900/50 text-red-300 p-3 rounded-md mb-4 text-sm'>{formError.liters}</p>}
 				<InputField
 					id='price'
-					label='Total Price (€)'
+				label='Price per liter (₹)'
 					type='number'
 					step='0.001'
-					placeholder='60'
+				placeholder='100'
 					//value={formData.price}
 					onChange={(e) => setFormData((state) => ({ ...state, price: +e.target.value }))}
 					icon={<EuroIcon className='w-5 h-5 text-gray-400' />}
@@ -100,7 +100,7 @@ export const FuelForm: React.FC<FuelFormProps> = ({ onAddEntry, entries }) => {
 				{formError.price && <p className='bg-red-900/50 text-red-300 p-3 rounded-md mb-4 text-sm'>{formError.price}</p>}
 				<InputField
 					id='odometer'
-					label='Total Mileage'
+				label='Odometer value'
 					type='number'
 					placeholder='66700'
 					// value={formData.odometer.toString()}
