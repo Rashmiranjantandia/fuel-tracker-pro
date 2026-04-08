@@ -53,20 +53,20 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({ stats }) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <StatCard 
-                title="Consommation moyenne"
+                title="Average Consumption"
                 value={stats.averageConsumption.toFixed(2)}
                 unit="L/100km"
                 icon={<FireIcon className="w-6 h-6 text-brand-secondary" />}
             />
             <StatCard 
-                title="Coût total"
+                title="Total Cost"
                 value={stats.totalCost.toFixed(2)}
                 unit="€"
                 icon={<WalletIcon className="w-6 h-6 text-brand-secondary" />}
             />
             <StatCard 
-                title="Distance totale"
-                value={stats.totalDistance.toLocaleString('fr-FR')}
+                title="Total Distance"
+                value={stats.totalDistance.toLocaleString(undefined)}
                 unit="km"
                 icon={<MapIcon className="w-6 h-6 text-brand-secondary" />}
             />

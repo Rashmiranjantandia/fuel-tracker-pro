@@ -13,7 +13,7 @@ function App() {
 					<GasPumpIcon className='w-10 h-10 text-brand-primary' />
 					<div>
 						<h1 className='text-4xl font-extrabold tracking-tight text-text-primary'>Fuel Tracker Pro</h1>
-						<p className='text-text-secondary'>Votre gestionnaire de consommation d'essence</p>
+						<p className='text-text-secondary'>Your fuel consumption manager</p>
 					</div>
 				</header>
 
@@ -31,7 +31,7 @@ function App() {
 				</main>
 
 				<footer className='text-center mt-12 text-sm text-base-300'>
-					<p>Développé avec ❤️ pour les amateurs d'automobiles.</p>
+					<p>Developed ❤️ for car enthusiasts.</p>
 				</footer>
 			</div>
 		</div>

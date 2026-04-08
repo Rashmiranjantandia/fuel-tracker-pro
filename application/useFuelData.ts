@@ -25,7 +25,7 @@ export const useFuelData = () => {
 	const addFuelEntry = useCallback(
 		async (data: Omit<RawFuelEntry, 'id'>) => {
 			if (fuelLog.getEntries().some((entry) => data.odometer > 0 && entry.odometer === data.odometer)) {
-				const message = `Un relevé avec ce kilométrage (${data.odometer} km) existe déjà.`;
+				const message = `A reading with this mileage (${data.odometer} km) already exists.`;
 				setError(message);
 				console.error(message);
 				//throw new Error(message);

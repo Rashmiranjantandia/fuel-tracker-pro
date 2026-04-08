@@ -46,7 +46,7 @@ export class FuelLog {
 		}
 		const firstEntry = entries[0];
 		const lastEntry = entries[entries.length - 1];
-		const totalLiters = entries.reduce((sum, entry) => sum + entry.liters, 0);
+		const totalLiters = entries.filter(entry => entry.tripDistance !== undefined).reduce((sum, entry) => sum + entry.liters, 0);
 		const totalDistance = lastEntry.odometer - firstEntry.odometer;
 		const totalCost = entries.reduce((sum, entry) => sum + entry.totalCost, 0);
 		const averageConsumption = totalDistance > 0 ? (totalLiters / totalDistance) * 100 : 0;

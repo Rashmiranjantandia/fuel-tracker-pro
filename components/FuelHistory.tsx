@@ -19,7 +19,7 @@ const HistoryItem: React.FC<{ entry: FuelEntry; onDelete: (id: string) => void }
             <div className="flex items-center space-x-3">
                 <CalendarIcon className="w-5 h-5 text-text-secondary" />
                 <span className="font-bold text-lg text-text-primary">
-                    {new Date(entry.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    {new Date(entry.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
                 </span>
             </div>
             {entry.l100km && (
@@ -40,7 +40,7 @@ const HistoryItem: React.FC<{ entry: FuelEntry; onDelete: (id: string) => void }
             </div>
              <div className="flex items-center space-x-2">
                 <RoadIcon className="w-4 h-4 text-text-secondary"/>
-                <p><span className="font-semibold">{entry.odometer.toLocaleString('fr-FR')}</span> km</p>
+                <p><span className="font-semibold">{entry.odometer.toLocaleString(undefined)}</span> km</p>
             </div>
             <div className="flex items-center space-x-2 font-bold text-lg text-text-primary">
                  <p>{entry.totalCost.toFixed(2)} €</p>
@@ -49,14 +49,14 @@ const HistoryItem: React.FC<{ entry: FuelEntry; onDelete: (id: string) => void }
 
         {entry.tripDistance && (
             <div className="mt-3 pt-3 border-t border-base-300 text-xs text-text-secondary">
-                Distance depuis le dernier plein: <span className="font-semibold text-text-primary">{entry.tripDistance.toLocaleString('fr-FR')} km</span>
+                Distance since last fill-up: <span className="font-semibold text-text-primary">{entry.tripDistance.toLocaleString(undefined)} km</span>
             </div>
         )}
 
         <button
             onClick={() => onDelete(entry.id)}
             className="absolute top-3 right-3 p-2 rounded-full bg-base-300 text-gray-400 opacity-0 group-hover:opacity-100 hover:bg-red-900/50 hover:text-red-300 transition-all duration-300"
-            aria-label="Supprimer l'entrée"
+            aria-label="Delete entry"
         >
             <TrashIcon className="w-5 h-5" />
         </button>
@@ -69,7 +69,7 @@ export const FuelHistory: React.FC<FuelHistoryProps> = ({ entries, onDeleteEntry
 
     return (
         <div className="bg-base-200 p-8 rounded-2xl shadow-lg">
-            <h2 className="text-2xl font-bold mb-6 text-text-primary">Historique des pleins</h2>
+            <h2 className="text-2xl font-bold mb-6 text-text-primary">Fill-up History</h2>
             {sortedEntries.length > 0 ? (
                 <ul aria-label="history-list" className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
                     {sortedEntries.map(entry => (
@@ -79,8 +79,8 @@ export const FuelHistory: React.FC<FuelHistoryProps> = ({ entries, onDeleteEntry
             ) : (
                 <div className="text-center py-10 px-6 bg-base-300 rounded-lg">
                     <GasPumpIcon className="w-12 h-12 mx-auto text-text-secondary mb-4" />
-                    <h3 className="text-lg font-semibold text-text-primary">Aucun plein enregistré</h3>
-                    <p className="text-text-secondary mt-1">Ajoutez votre premier plein pour commencer le suivi!</p>
+                    <h3 className="text-lg font-semibold text-text-primary">No fill-ups recorded</h3>
+                    <p className="text-text-secondary mt-1">Add your first fill-up to start tracking!</p>
                 </div>
             )}
         </div>

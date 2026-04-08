@@ -63,7 +63,7 @@ describe('App Integration Test', () => {
 
 		// 1. Initial State: Verify the app loads with no data
 		expect(screen.getByText(/Fuel Tracker Pro/i)).toBeInTheDocument();
-		expect(screen.getByText(/Aucun plein enregistré/i)).toBeInTheDocument();
+		expect(screen.getByText(/No fill-ups recorded/i)).toBeInTheDocument();
 
 		const statsCards = screen.getAllByTestId('stat-card');
 
@@ -72,54 +72,54 @@ describe('App Integration Test', () => {
 		expect(within(statsCards[2]).getByText('0')).toBeInTheDocument(); // Total Distance
 
 		// 2. Add the first fuel entry
-		await user.clear(screen.getByLabelText(/Date du jour/i));
-		await user.type(screen.getByLabelText(/Date du jour/i), '2023-01-01');
-		await user.type(screen.getByLabelText(/Litres Total/i), '40');
-		await user.type(screen.getByLabelText(/Prix Total/i), '80');
-		await user.type(screen.getByLabelText(/Kilométrage Total/i), '10000');
-		await user.click(screen.getByRole('button', { name: /Enregistrer le plein/i }));
+		await user.clear(screen.getByLabelText(/Date/i));
+		await user.type(screen.getByLabelText(/Date/i), '2023-01-01');
+		await user.type(screen.getByLabelText(/Total Liters/i), '40');
+		await user.type(screen.getByLabelText(/Total Price/i), '80');
+		await user.type(screen.getByLabelText(/Total Mileage/i), '10000');
+		await user.click(screen.getByRole('button', { name: /Record Fill-up/i }));
 
 		// 3. Verify the first entry is in the history and stats are updated
 		await waitFor(() => {
-			// On attend que le message "Aucun plein" disparaisse, ce qui confirme la mise à jour de l'UI.
-			expect(screen.queryByText(/Aucun plein enregistré/i)).not.toBeInTheDocument();
+			// Wait for the "No fill-ups recorded" message to disappear, confirming UI update.
+			expect(screen.queryByText(/No fill-ups recorded/i)).not.toBeInTheDocument();
 		});
 		const historyList = screen.getByRole('list', { name: /history-list/i });
 		await waitFor(() => {
-			expect(within(historyList).getByText(/1 janvier 2023/i)).toBeInTheDocument();
-			expect(within(historyList).getByText(/10 000/i)).toBeInTheDocument();
+			expect(within(historyList).getByText(/January 1, 2023/i)).toBeInTheDocument();
+			expect(within(historyList).getByText(/10,000/i)).toBeInTheDocument();
 		});
 
 		// Stats update (only total cost changes with one entry)
 		expect(within(statsCards[1]).getByText('80.00')).toBeInTheDocument(); // 80.00
 
 		// 4. Add the second fuel entry
-		await user.clear(screen.getByLabelText(/Date du jour/i));
-		await user.type(screen.getByLabelText(/Date du jour/i), '2023-10-27');
-		await user.type(screen.getByLabelText(/Litres Total/i), '35');
-		await user.type(screen.getByLabelText(/Prix Total/i), '60');
-		await user.type(screen.getByLabelText(/Kilométrage Total/i), '12000');
-		await user.click(screen.getByRole('button', { name: /Enregistrer le plein/i }));
+		await user.clear(screen.getByLabelText(/Date/i));
+		await user.type(screen.getByLabelText(/Date/i), '2023-10-27');
+		await user.type(screen.getByLabelText(/Total Liters/i), '35');
+		await user.type(screen.getByLabelText(/Total Price/i), '60');
+		await user.type(screen.getByLabelText(/Total Mileage/i), '12000');
+		await user.click(screen.getByRole('button', { name: /Record Fill-up/i }));
 
 		// 5. Verify both entries are present and stats are fully calculated
 		await waitFor(() => {
-			expect(within(historyList).getByText(/27 octobre 2023/i)).toBeInTheDocument();
+			expect(within(historyList).getByText(/October 27, 2023/i)).toBeInTheDocument();
 		});
 		expect(within(historyList).getAllByRole('listitem')).toHaveLength(2);
 		await waitFor(() => {
 			// Check calculated stats
 			expect(within(statsCards[0]).queryByText('3.75')).toBeInTheDocument();
 			expect(within(statsCards[1]).queryByText('140.00')).toBeInTheDocument();
-			expect(within(statsCards[2]).queryByText('2 000')).toBeInTheDocument();
+			expect(within(statsCards[2]).queryByText('2,000')).toBeInTheDocument();
 		});
 		// 6. Delete the first entry
 		const historyItems = within(historyList).getAllByRole('listitem');
-		const firstEntryDeleteButton = within(historyItems[1]).getByRole('button', { name: /Supprimer l'entrée/i });
+		const firstEntryDeleteButton = within(historyItems[1]).getByRole('button', { name: /Delete entry/i });
 		await user.click(firstEntryDeleteButton);
 
 		// 7. Verify the entry is gone and stats are recalculated
 		await waitFor(() => {
-			expect(within(historyList).queryByText(/1 janvier 2023/i)).not.toBeInTheDocument();
+			expect(within(historyList).queryByText(/January 1, 2023/i)).not.toBeInTheDocument();
 			expect(within(historyList).getAllByRole('listitem')).toHaveLength(1);
 		});
 
@@ -134,22 +134,22 @@ describe('App Integration Test', () => {
 		render(<App />);
 
 		// Add an entry
-		await user.type(screen.getByLabelText(/Kilométrage Total/i), '15000');
-		await user.type(screen.getByLabelText(/Litres Total/i), '50');
-		await user.type(screen.getByLabelText(/Prix Total/i), '90');
-		await user.click(screen.getByRole('button', { name: /Enregistrer le plein/i }));
+		await user.type(screen.getByLabelText(/Total Mileage/i), '15000');
+		await user.type(screen.getByLabelText(/Total Liters/i), '50');
+		await user.type(screen.getByLabelText(/Total Price/i), '90');
+		await user.click(screen.getByRole('button', { name: /Record Fill-up/i }));
 
-		// On attend que la première entrée soit bien visible dans l'historique.
-		// findBy... est une manière concise d'attendre l'apparition d'un élément.
-		await screen.findByText(/15 000/);
+		// Wait for the first entry to be visible in the history.
+		// findBy... is a concise way to wait for an element to appear.
+		await screen.findByText(/15,000/);
 
 		// Try to add another entry with the same odometer
-		// Le formulaire est vidé après soumission, il faut donc remplir à nouveau les autres champs.
-		await user.type(screen.getByLabelText(/Kilométrage Total/i), '15000');
-		await user.type(screen.getByLabelText(/Litres Total/i), '30');
-		await user.type(screen.getByLabelText(/Prix Total/i), '60');
-		await user.click(screen.getByRole('button', { name: /Enregistrer le plein/i }));
+		// The form is cleared after submission, so we need to fill in the other fields again.
+		await user.type(screen.getByLabelText(/Total Mileage/i), '15000');
+		await user.type(screen.getByLabelText(/Total Liters/i), '30');
+		await user.type(screen.getByLabelText(/Total Price/i), '60');
+		await user.click(screen.getByRole('button', { name: /Record Fill-up/i }));
 
-		expect(screen.getByText(/Un relevé avec ce kilométrage \(15000 km\) existe déjà\./i)).toBeInTheDocument();
+		expect(screen.getByText(/A reading with this mileage \(15000 km\) already exists\./i)).toBeInTheDocument();
 	});
 });

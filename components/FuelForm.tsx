@@ -8,9 +8,9 @@ import { RoadIcon } from './icons/RoadIcon';
 import { InputField } from './Input';
 const schema = z.object({
 	date: z.string(),
-	liters: z.number().positive('Le litrage est incorrect'),
-	price: z.number().positive('Le prix est incorrect'),
-	odometer: z.number().min(0, 'Le kilométrage est incorrect'),
+	liters: z.number().positive('The fuel amount is incorrect'),
+	price: z.number().positive('The price is incorrect'),
+	odometer: z.number().min(0, 'The mileage is incorrect'),
 });
 const initFormDataValue = {
 	date: new Date().toISOString().split('T')[0],
@@ -54,19 +54,19 @@ export const FuelForm: React.FC<FuelFormProps> = ({ onAddEntry, entries }) => {
 			if (err instanceof Error) {
 				setError(err.message);
 			} else {
-				setError('Une erreur inattendue est survenue.');
+				setError('An unexpected error occurred.');
 			}
 		}
 	};
 
 	return (
 		<div className='bg-base-200 p-8 rounded-2xl shadow-lg'>
-			<h2 className='text-2xl font-bold mb-6 text-text-primary'>Ajouter un plein</h2>
+			<h2 className='text-2xl font-bold mb-6 text-text-primary'>Add a Fill-up</h2>
 			{error && <p className='bg-red-900/50 text-red-300 p-3 rounded-md mb-4 text-sm'>{error}</p>}
 			<form ref={formRef} onSubmit={handleSubmit} className='space-y-6'>
 				<InputField
 					id='date'
-					label='Date du jour'
+					label='Date'
 					type='date'
 					value={formData.date}
 					onChange={(e) => setFormData((state) => ({ ...state, date: e.target.value }))}
@@ -76,7 +76,7 @@ export const FuelForm: React.FC<FuelFormProps> = ({ onAddEntry, entries }) => {
 				{formError.date && <p className='bg-red-900/50 text-red-300 p-3 rounded-md mb-4 text-sm'>{formError.date}</p>}
 				<InputField
 					id='liters'
-					label='Litres Total'
+					label='Total Liters'
 					type='number'
 					step='0.01'
 					placeholder='35'
@@ -88,7 +88,7 @@ export const FuelForm: React.FC<FuelFormProps> = ({ onAddEntry, entries }) => {
 				{formError.liters && <p className='bg-red-900/50 text-red-300 p-3 rounded-md mb-4 text-sm'>{formError.liters}</p>}
 				<InputField
 					id='price'
-					label='Prix Total (€)'
+					label='Total Price (€)'
 					type='number'
 					step='0.001'
 					placeholder='60'
@@ -100,7 +100,7 @@ export const FuelForm: React.FC<FuelFormProps> = ({ onAddEntry, entries }) => {
 				{formError.price && <p className='bg-red-900/50 text-red-300 p-3 rounded-md mb-4 text-sm'>{formError.price}</p>}
 				<InputField
 					id='odometer'
-					label='Kilométrage Total'
+					label='Total Mileage'
 					type='number'
 					placeholder='66700'
 					// value={formData.odometer.toString()}
@@ -112,7 +112,7 @@ export const FuelForm: React.FC<FuelFormProps> = ({ onAddEntry, entries }) => {
 				<button
 					type='submit'
 					className='w-full text-white bg-brand-primary hover:bg-brand-secondary focus:ring-4 focus:outline-none focus:ring-teal-800 font-medium rounded-lg text-sm px-5 py-3 text-center transition-colors duration-300'>
-					Enregistrer le plein
+					Record Fill-up
 				</button>
 			</form>
 		</div>
